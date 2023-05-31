@@ -1,1 +1,89 @@
-1
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 1.绝对定位+margin（需要定宽高） */
+        .dad {
+            position: relative;
+            background-color: skyblue;
+            width: 500px;
+            height: 500px;
+        }
+
+        .son {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: tomato;
+            top: 50%;
+            left: 50%;
+            margin-left: -100px;
+            margin-top: -100px;
+        }
+
+        /* 2.绝对定位+transform */
+        /* .son {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: tomato;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        } */
+
+
+        /* 3.绝对定位+top,left,right,bottom=0+margin:auto; */
+        /* .son {
+            position: absolute;
+            background-color: tomato;
+            width: 100px;
+            height: 150px;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        } */
+
+        /* 4.flex */
+        /* .dad {
+            display: flex;
+            background-color: skyblue;
+            width: 500px;
+            height: 500px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .son {
+            background-color: tomato;
+        } */
+        /* 5.flex+margin给指定的子元素在剩余的空间中居中 */
+        /* .dad {
+            display: flex;
+            background-color: skyblue;
+            width: 500px;
+            height: 500px;
+        }
+
+        .son {
+            background-color: tomato;
+            margin: auto;
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="dad">
+        <div class="son">居中</div>
+        <!-- <div class="son2">不居中</div> -->
+    </div>
+</body>
+
+</html>
