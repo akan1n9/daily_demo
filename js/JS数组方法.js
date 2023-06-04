@@ -89,3 +89,259 @@ let res4 = arr9.reverse();
 
 console.log(arr9);
 console.log(res4);
+
+//sort()无参时按照unicode编码排序
+let ar1 = ['e', 'b', 'd', 'a', 'f', 'c'];
+let re1 = ar1.sort();
+//会改变原数组
+console.log(ar1);
+console.log(re1);
+
+let ar2 = [5, 2, 11, 3, 4, 1];
+let re2 = ar2.sort(); // 将数组 ar2 进行排序
+
+console.log(ar2);
+console.log(re2);
+//自定义排序规则
+var ar3 = [5, 2, 11, 3, 4, 1];
+var re3 = ar3.sort(function (a, b) {
+    return a - b; // 升序排列
+    // return b - a; // 降序排列
+});
+// ES6写法
+let re4 = ar3.sort((a, b) => a - b)
+
+console.log(ar3);
+console.log(re3);
+console.log(re4);
+
+//查找数组的元素
+
+// 元素的索引 = 数组.indexOf(想要查询的元素);
+// 元素的索引 = 数组.lastIndexOf(想要查询的元素);
+
+const arr = ['a', 'b', 'c', 'd', 'e', 'd', 'c'];
+
+console.log(arr.indexOf('c'));
+console.log(arr.lastIndexOf('d'));
+
+let art = ['1', '2', '3', '4', '5'];
+console.log(art.indexOf(2));
+
+// 索引值 = 数组.indexOf(想要查找的元素, [查找的起始位置]);
+
+let str = ['q', 'i', 'a', 'n', 'g', 'u', 'y', 'i', 'h', 'a', 'o'];
+result = str.indexOf('a', 3);
+
+console.log(result);
+
+// includes()
+
+// 布尔值 = arr.includes(想要查找的元素, [position]);
+const art1 = [11, 12, 13, 14, 15];
+console.log(art1.includes(12));
+console.log(art1.includes(20));
+
+console.log(art1.includes(11, 1));
+
+// find()
+const itemResult = arr.find((currentItem, currentIndex, currentArray) => {
+    return true;
+});
+
+// 找出第一个满足指定条件的元素并返回
+let art2 = [2, 4, 6, 8, 1, 5, 7];
+let ret = art2.find((item, index) => {
+    return item > 5 && item % 2 !== 0;
+})
+
+console.log(ret);
+
+// findIndex()
+const indexResult = arr.findIndex((currentItem, currentIndex, currentArray) => {
+    return true;
+});
+// 找出第一个满足指定条件的元素的索引，没找到返回-1
+let art3 = [2, 4, 6, 8, 1, 5, 7];
+let ret1 = art3.findIndex((item, index) => {
+    return item > 5 && item % 2 !== 0;
+})
+
+console.log(ret1);
+
+// every()
+const boolResult = arr.every((currentItem, currentIndex, currentArray) => {
+    return true;
+});
+// 对数组每一项运行回调函数，全部返回true，every就返回true，否则返回false
+let art4 = ['数学', '统计', '统计学', '信科'];
+let bool1 = art4.every(function (item, index, array) {
+    if (item.length > 2) {
+        return false;
+    }
+    return true;
+});
+console.log(bool1);
+
+let art5 = ['数学', '统计', '计学', '信科'];
+let bool2 = art5.every(function (item, index, array) {
+    if (item.length > 2) {
+        return false;
+    }
+    return true;
+});
+console.log(bool2);
+
+// some()
+// 对数组中每一个元素运行回调函数，只要有一个元素返回 true，则停止遍历，此方法返回 true。
+
+// 遍历数组
+
+// for循环
+const xh1 = [11, 22, 33, 44, 55]
+for (let i = 0; i < xh1.length; i++) {
+    console.log(xh1[i]);
+}
+
+// forEach()--只支持 IE8 以上的浏览器
+
+let myArr = ['一班', '二班', '三班'];
+
+myArr.forEach((currentItem, currentIndex, currentArray) => {
+    console.log('item:' + currentItem);
+    console.log('index:' + currentIndex);
+    console.log('arr:' + JSON.stringify(currentArray));
+    console.log('----------');
+});
+// forEach() 没有返回值。无法通过newArray = currentArray.forEach()这种方式来接收
+
+// 数组的元素是基本数据类型
+let numArr = [1, 2, 3];
+
+numArr.forEach((item) => {
+    item = item * 2;
+});
+console.log(numArr);//没有改变原数组
+
+// 数组的元素是引用数据类型
+
+// 1.直接修改整个元素对象
+let objArr = [
+    { name: '清华', age: 20 },
+    { name: '北大', age: 30 },
+];
+
+objArr.forEach((item) => {
+    item = {
+        name: '南大',
+        age: '29',
+    };
+});
+console.log(objArr); //不改变原数组
+
+// 2.修改元素对象里的某个属性
+let objArr1 = [
+    { name: '壹号', age: 28 },
+    { name: '二号', age: 30 },
+];
+
+objArr1.forEach((item) => {
+    item.name = '三号';
+});
+console.log(objArr1);
+
+// forEach() 通过参数 2、参数 3 修改原数组
+
+let numArr1 = [1, 2, 3];
+
+numArr1.forEach((item, index, arr) => {
+    arr[index] = arr[index] * 2;
+});
+console.log(numArr1);
+
+let objArr2 = [
+    { name: '一', age: 28 },
+    { name: '二', age: 34 },
+];
+
+objArr2.forEach((item, index, arr) => {
+    arr[index] = {
+        name: '小明',
+        age: '10',
+    };
+});
+console.log(objArr2);
+
+let objArr3 = [
+    { name: '小虎', age: 28 },
+    { name: '小皮', age: 34 },
+];
+
+objArr3.forEach((item, index, arr) => {
+    arr[index].name = '小明';
+});
+console.log(objArr3);
+
+// for of --ES6
+
+for (let value of arr) {
+    console.log(value);
+}
+
+// 关于for in
+// for in 是专门用于遍历对象的。对象的属性是无序的（数组的元素有序），for in循环就是专门用于遍历无序的对象。
+for (let key in obj) {
+    console.log(key);
+    console.log(obj.key);
+}
+
+// map()
+// 对数组中每一项运行回调函数，返回该函数的结果，组成的新数组（返回的是加工后的新数组）。不会改变原数组。
+// ES5
+const nrr = arr.map(function (currentItem, currentIndex, currentArray) {
+    return newItem;
+});
+
+// ES6语法
+const nrr1 = arr.map((currentItem, currentIndex, currentArray) => {
+    return newItem;
+});
+
+const ar4 = [1, 3, 6, 2, 5, 6];
+const ar5 = ar4.map(item => {
+    return item + 10;
+});
+console.log(ar5);
+
+const a1 = [
+    { name: '西电', loc: '西安' },
+    { name: '杭电', loc: '杭州' },
+];
+const a2 = a1.map(item => item.name);
+
+const a3 = a1.map(item => ({
+    myName: item.name,
+    myLoc: item.loc,
+}));
+console.log(a1);
+console.log(a2);
+console.log(a3);
+
+// map()会不会改变原数组
+
+const mrr = [
+    {
+        name: "小七",
+        age: 22,
+    },
+    {
+        name: "小八",
+        age: 23,
+    },
+];
+
+mrr.map((item) => {
+    item.name = "哈哈"; // 修改 item 里的某个属性
+    return item;
+});
+console.log(mrr);//map方法如果是修改整个item的值，则不会改变原数组。但如果是修改 item 里面的某个属性，那就会改变原数组。
