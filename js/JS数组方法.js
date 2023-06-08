@@ -345,3 +345,61 @@ mrr.map((item) => {
     return item;
 });
 console.log(mrr);//map方法如果是修改整个item的值，则不会改变原数组。但如果是修改 item 里面的某个属性，那就会改变原数组。
+
+// filter()
+//对数组中每一项执行回调函数，返回结果为true的项，组成新数组返回，不改变原数组
+// 用来对数组进行过滤
+const newArr = arr.filter((currentItem, currentIndex, currentArray) => {
+    return true;
+});
+
+let a4 = [1, 32, 3, 4, 5, 6]
+let newa4 = a4.filter(item => item > 4)
+
+console.log(a4);
+console.log(newa4);
+
+const a5 = [
+    { name: '许嵩', type: '一线' },
+    { name: '周杰伦', type: '退居二线' },
+    { name: '邓紫棋', type: '一线' },
+];
+const newa5 = a5.filter((item) => item.type == '一线');
+
+console.log(a5);
+console.log(newa5);
+
+//reduce()
+// arr.reduce(function (上一次回调函数返回值（必填），当前处理的数组元素（必），当前处理的数组元素的下标（选）) { }, 初始预设值)
+
+const a6 = [1, 3, 4, 5, 6]
+a6.reduce((prev, item) => {
+    console.log(prev);
+    console.log(item);
+    console.log('-----------');
+    return 101;
+}, 0)
+
+// reduce应用
+// 求和
+const rer = [12, 22, 32, 42];
+const sum = rer.reduce((prev, item) => prev + item)
+console.log(rer);
+console.log(sum);
+// 统计次数
+function repeatval(arr, val) {
+    if (!arr || arr.length == 0) return 0;
+    return arr.reduce((prev, item) => {
+        prev += item == val ? 1 : 0;
+        return prev;
+    }, 0)
+}
+const exp1 = [1, 2, 3, 5, 4, 3, 5, 343, 5, 2, 5]
+console.log(repeatval(exp1, 5));
+// 求最值
+const exp2 = [22, 30, 21, 19, 66];
+const maxValue = exp2.reduce((prev, item) => {
+    return prev > item ? prev : item;
+});
+
+console.log(maxValue); 
