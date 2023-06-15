@@ -77,3 +77,17 @@ function removeDuplicate(arr) {
 const result = removeDuplicate(arr)
 // console.log(result)
 // [1, 'true',true, 15, false, undefined, null,  NaN,'NaN', 0,'a',   {},{}]
+
+
+
+// 如何删除数组中重复的空对象
+// 首先，我们可以使用 Array.filter() 方法来过滤掉数组中的所有空对象。
+// 然后，我们可以使用 JSON.stringify() 方法将每个对象转换为字符串，将这些字符串存储在一个 Set 中。
+// 由于 Set 只会存储唯一值，我们可以将 Set 转换回数组并返回去重后的数组。下面是一种实现方法：
+// let arr = [ {}, {}, {foo: 'bar'}, {}, {a: 1}, {} ];
+// let uniqueArr = Array.from(new Set(arr.filter(obj => Object.keys(obj).length !== 0).map(JSON.stringify)), JSON.parse);
+// console.log(uniqueArr); // [{foo: 'bar'}, {a: 1}]
+// 在上面的代码中，我们首先使用 Array.filter() 方法来过滤掉所有空对象。
+// 然后，我们使用 Array.map() 方法来将每个对象转换为字符串，使用 JSON.stringify() 方法完成此操作。
+// 然后，我们将这些字符串存储在一个 Set 中。
+// 最后，我们将 Set 转换回数组并使用 JSON.parse() 方法将每个字符串转换回对象。
