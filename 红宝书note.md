@@ -13,3 +13,15 @@
 
 
 任何函数只要使用new操作符调用就是构造函数，不使用new操作符调用的就是普通函数。
+
+
+
+函数的arguments对象可以看成一个类数组，里面保存着函数传入的参数，可通过索引获取，arguments[0],arguments.length（箭头函数没有）
+
+
+
+arguments有个属性callee，arguments.callee是一个指向arguments对象所在函数的指针
+
+
+
+函数声明可以提升。函数表达式无法提升
