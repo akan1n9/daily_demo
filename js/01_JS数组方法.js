@@ -60,7 +60,7 @@ console.log(result2);
 //新数组 = 原数组.slice(开始位置的索引, 结束位置的索引);（左闭右开）
 
 const arr8 = ['a', 'b', 'c', 'd', 'e', 'f'];
-
+console.log(arr8.slice(0,-2));
 const result3 = arr8.slice(); // 不加参数时，则获取所有的元素。相当于数组的整体赋值
 const result4 = arr8.slice(2); // 从索引2开始提取，直到末尾
 const result5 = arr8.slice(-2); // 提取最后两个元素
