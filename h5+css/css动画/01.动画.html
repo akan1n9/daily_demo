@@ -11,7 +11,8 @@
             height: 100px;
             border-radius: 50%;
             background-color: pink;
-            animation: ;
+            animation: move 2s linear 2 both;
+
             /* animation（动画）属性，是 8 个属性的简写。
             animation-duration 指定动画完成一个周期所需要时间，单位秒（s）或毫秒（ms），默认是 0。
             animation-timing-function 指定动画计时函数，即动画的速度曲线，默认是 "ease"。
@@ -21,7 +22,17 @@
             animation-fill-mode 指定动画填充模式。默认是 none。
             animation-play-state 指定动画播放状态，正在运行或暂停。默认是 running。
             animation-name 指定 @keyframes 动画的名称。*/
+            
         }
+        @keyframes move {
+                0% {
+                    transform: translate(100px, 0)
+                }
+
+                100% {
+                    transform: translate(1000px, 0)
+                }
+            }
     </style>
 </head>
 
