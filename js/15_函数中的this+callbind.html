@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    //标准函数
+    window.color = 'red';
+    let o = {
+        color: 'blue'
+    }
+
+    function hah() {
+        console.log(this.color);
+    }
+    hah();
+
+    o.hah = hah;
+    o.hah();
+    // this引用的是吧函数当成方法调用的上下文对象
+
+    //箭头函数
+    window.name = 'hefei';
+    let oo = {
+        name: 'xian'
+    }
+    let sayName = () => console.log(this.name);
+    sayName();
+    o.sayName = sayName;
+    o.sayName()
+    // 箭头函数的this引用的是定义箭头函数的上下文
+    // 一句话：ES5里面的的this永远指向最后调用它的那个对象,箭头函数的 this 始终指向函数定义时的 this，而非执行时
+
+
+    //例1 
+    var name = "windowsName";
+    var a = {
+        name: "Cherry",
+
+        func1: function () {
+            console.log(this.name)
+        },
+
+        // func2: function () {
+        //     setTimeout(function () {
+        //         console.log(this);//window
+        //         this.func1()//会报错，a.func2最后调用定时器的是window对象
+        //     }, 100);
+        // }
+
+        // 通过箭头函数解决
+        // func2: function () {
+        //     setTimeout(()=>{
+        //         console.log(this);
+        //         this.func1()//如果箭头函数被非箭头函数包含，则 this 绑定的是最近一层非箭头函数的 this
+        //     }, 100);
+        // }
+
+        // 通过_this = this 解决
+        // func2: function () {
+        //     var _this = this;//把func2里的this保存起来，下文是a调用的func2，所以_this是a
+        //     setTimeout(function () {
+        //         _this.func1()
+        //     }, 100);
+        // }
+
+        //通过call、apply解决
+        // func2: function () {
+        //     setTimeout(  function () {
+        //         this.func1()
+        //     }.apply(a),100);//借用a作为函数的this
+        // }
+
+        // func2: function () {
+        //     setTimeout(function () {
+        //         this.func1()
+        //     }.call(a), 100);//借用a作为函数的this
+        // }
+
+        // 通过bind解决
+        func2: function () {
+            setTimeout(function () {
+                this.func1()
+            }.bind(a)(), 100)
+        }
+
+    };
+    a.func2()
+
+    // call与apply的唯一区别:
+    // apply是第2个参数，这个参数是一个数组：传给fun参数都写在数组中。
+    // call从第2~n的参数都是传给fun的。
+
+    // call/apply与bind的区别
+    // call/apply改变了函数的this上下文后马上执行该函数,bind则是返回改变了上下文后的函数,不执行该函数
+    // call/apply 返回fun的执行结果,bind返回fun的拷贝，并指定了fun的this指向，保存了fun的参数。
+
+</script>
+
+</html>
