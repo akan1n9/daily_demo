@@ -1,152 +1,37 @@
-### 类定义
+在es6之前，js语法不支持类的，导致面向对象编程方法无法直接使用，我们通过构造函数以及原型、原型链去模拟类，抽象出对象模板。
 
-类声明
+而在es6中，class作为一个语法糖结构，显示的支持面向对象编程，实际背后使用的仍然是原型和构造函数的概念。
 
-`class Person {}`
+class受块级作用域限制，并且类定义不像函数声明一样可以提升。
 
-类表达式
+类包含的构造函数constructor，会在new一个类对象实例时，执行这个函数，实例化时constructor里的this就是新实例对象。
 
-`const animal = class{}`
+constructor里包含一些添加到this的属性和方法，在new实例化时给新实例对象添加属性和方法。
 
-与函数表达式类似，类表达式在它们被求值前不能引用。但是函数声明可以提升，类定义不能提升。
-
-函数受函数作用域限制，类受块作用域限制：
-
-```
-{
-	function Func1() {}
-	class Class1 {}
-}
-console.log(Func1);//Func1() {}
-console.log(Class1);//ReferenceError: ClassDeclaration is not defined
-```
-
-### 类构造函数
-
-constructor用于在类定义块内部创建类的构造函数。方法名constructor会告诉解释器在使用new操作符创建类的新实例时，应该调用这个函数。构造函数的定义不是必需的，不定义相当于将其定义为空函数。
-
-#### 实例化
-
-```
-class Person{
-	constructor () {
-	 console.log('person one')
-	}
-}
-let a = new Person()//person one
-```
-
-new Person()的操作相当于使用new调用其constructor函数。使用new调用类的构造函数：
-
-(1)在内存中创建一个新对象
-
-(2)新对象内部的[[Prototype]]被赋值为构造函数的prototype属性
-
-(3)构造函数内部的this被赋值给这个新对象即this指向新对象
-
-(4)执行构造函数内的代码
-
-(5)如果构造函数返回非空对象，则返回该对象；否则，返回刚创建的新对象
-
-```
-class Version{
-	constructor () {
-	this.color = blue;
-	}
-}
-let a = new Version();
-console.log(a.color)//blue
-```
-
-类的每个实例都对应一个唯一的成员对象，所有成员都不会在原型上共享。
-
-#### 原型方法
-
-在类块中定义的方法作为原型方法
+而在类块中定义的所有内容都会定义在类的原型上。举个栗子：
 
 ```
 class Person{
 	constructor(){
-	//添加到this的所有内容都会存在于不同的实例上
-		this.locate=()=>console.log('instance')
+		this.sayName = ()=>console.log('实例')
 	}
-	
-	//在类块中定义的所有内容都会定义在类的原型上
-	locate(){
-	  console.log('prototype')
-	}
+	sayName = ()=>console.log('prototype')
 }
 
-let p = new Person{}
-
-p.locate()               //instance
-Person.prototype.locate()//prototype
+let p = new Person()
+p.sayName() //实例
+Person.prototype.sayName() //prototype
 ```
 
-但不能在类块中给原型添加原始值或对象作为成员数据,可以在类的外部手动添加：
+其实在es中，class就是一种特殊的函数，typeof返回function。但在我个人看来，在跟es5实现继承对比时，我更愿意把它对应成一个原型对象。
+
+关于类的继承，有一个重要的关键字super，super只能在派生类中使用。
 
 ```
-class Person{
-	sayName(){
-		console.log(`${Person.greeting}`)
+constructor(){
+		super() //其内部的this指向子类的构造函数
 	}
-}
-
-Person.greeting = 'My name is aka'
 ```
 
+在派生类constructor里使用this之前一定要先通过super调用父类构造函数进行初始化，有点类似于call的继承，相当于把父类的constructor执行了，并且让其中的this指向派生类实例对象。然后派生类的构造函数可以进一步访问和修改 this. 
 
-
-#### 静态类方法
-
-在类上定义的静态方法通常用于执行不特定实例的操作，也不要求存在类的实例。静态成员每个类上只有一个。
-
-定义静态类成员使用static作为前缀
-
-```
-class Person{
-	constructor(){
-	//添加到this的所有内容都会存在于不同的实例上
-		this.locate=()=>console.log('instance'，this)
-	}
-	
-	//在类块中定义的所有内容都会定义在类的原型上
-	locate(){
-	  console.log('prototype',this)
-	}
-	
-	//定义在类本身上
-	static locate(){
-	  console.log('class', this)
-	}
-}
-
-let p = new Person{}
-
-p.locate()               //instance, Person{}
-Person.prototype.locate()//prototype, {constructor:...}
-Person.locate()          //class, class Person{} 
-```
-
-### 继承
-
-使用extends关键字实现继承
-
-使用super关键字引用派生类的原型，仅限于类构造函数、实例方法和静态方法内部。在类构造函数中使用super可以调用父构造函数。
-
-```
-class Parent{
-	constructor(){
-	
-	}
-}
-
-class Son extends Parent {
-	constructor(){
-		//不能在调用super()之前使用this
-		super()
-	}
-}
-```
-
-如果在派生类中显示定义了构造函数，则要么必须在其中调用super，要么必须返回一个对象。
