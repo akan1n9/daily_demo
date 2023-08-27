@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        .box,
+        .box1,
+        .box2 {
+            width: 200px;
+            height: 200px;
+        }
+
+        .box {
+            position: relative;
+            z-index: auto;
+        }
+
+        .box1 {
+            position: absolute;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="box1"></div>
+        <div class="box2"></div>
+    </div>
+    <!-- box2的层叠上下文由谁创建的？ -->
+</body>
+
+</html>
