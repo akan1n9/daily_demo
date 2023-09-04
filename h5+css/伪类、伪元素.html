@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        a:visited:hover {
+            color: red;
+        }
+
+        div::first-letter {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="">伪类和伪元素</a>
+    <div>伪类和伪元素</div>
+    <!--
+    动态伪类：:visited、:focus、:hover等
+    状态伪类：:disabled、:empty、:required 等
+    结构伪类：:first-child、:nth-of-type等
+    其他伪类：:target、:lang、:not()等 -->
+    <!-- 常用伪元素 -->
+    <!-- 
+    ::first-letter选中块状元素中的首字母✅
+    ::first-line选中首行✅
+    ::before在之前创建一个不在文档树中的元素✅
+    ::after在之后创建一个不在文档树中的元素✅
+    ::placeholder选中表单元素的占位文本✅
+    ::file-selector-button选中类型为 file 的 input 里面的 button✅
+    ::selection选中被用户高亮的部分⚠️
+    ::backdrop选中视觉聚焦元素后面的背景元素⚠️
+    ::marker选中 list 的 marker -->
+</body>
+
+</html>

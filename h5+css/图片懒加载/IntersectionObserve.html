@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        img {
+            width: 500px;
+            height: 300px;
+            object-fit: cover;
+            margin: 20px;
+        }
+
+        body {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+        }
+    </style>
+</head>
+
+<body>
+    <img data-src="../../img/12212.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/123.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/213213.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/213213214.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/2143131.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/3213.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/32131.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/321321.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <script>
+        let images = document.getElementsByTagName("img")
+        const observer = new IntersectionObserver(callback);
+        for (let i of images) {
+            observer.observe(i);//对元素开启观察
+        }
+        function callback(entries) {
+            console.log(entries);//entries是一个数组，它的数组元素为当前改变了状态触发了事件的目标元素。其中有一个isIntersecting属性，当目标元素在视口看得见为它true，不在时它为 false 。
+            for (let i of entries) {
+                if (i.isIntersecting) {
+                    let img = i.target//target属性返回触发事件的元素
+                    let newSrc = img.getAttribute("data-src")
+                    img.setAttribute("src", newSrc)
+                    //当某个图片已经加载过之后，停掉观察
+                    observer.unobserve(img)
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>

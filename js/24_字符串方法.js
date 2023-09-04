@@ -59,9 +59,10 @@ const fruits = list.split(/[,;]/)
 console.log(fruits);                                      //[ 'apples', 'bananas', 'cherries' ]
 
 // 6.截取字符串  substr() substring() slice()
-const str6 = "abcdefg"
+let str6 = "abcdefg"
 // slice(start,end)截取的子串下标区间“包左不包右”
-console.log(str6.slice(1, 6));                            //bcdef   从1截到6
+console.log(str6.slice(1, 6));
+console.log(str6);                            //bcdef   从1截到6
 console.log(str6.slice(1));                               //bcdefg  从1截到尾
 console.log(str6.slice());                                //abcdefg
 console.log(str6.slice(-2));                              //fg      截倒数两个字符
@@ -84,9 +85,10 @@ console.log(str8.substring(6, 1));                        // bcdef [1,6)
 console.log(str8.substring(-1));                          // abcdefgg 
 
 // 7.大小写转换  toLowerCase()/toUpperCase()
-const str9 = "adABDndj"
+let str9 = "adABDndj"
 console.log(str9.toLowerCase());                          //adabdndj
-console.log(str9.toUpperCase());                          //ADABDNDJ
+console.log(str9.toUpperCase());    
+console.log(str9);                      //ADABDNDJ
 
 let word = "apple"
 word = word[0].toUpperCase() + word.substr(1)
@@ -94,8 +96,9 @@ console.log(word);                                        //Apple
 
 // 8.字符串模式匹配  replace() match() search() 传入字符串的话 会先通过内置构造函数生成正则表达式对象
 
-const str10 = "abcdefa"
-console.log(str10.replace("a", "z"));                     //zbcdefa
+let str10 = "abcdefa"
+console.log(str10.replace("a", "z"));    
+console.log(str10);                 //zbcdefa
 
 let str11 = "Mr Blue has a blue house and a blue car";
 str11.replace(/blue/gi, "red");                           // 输出结果：'Mr red has a red house and a red car'

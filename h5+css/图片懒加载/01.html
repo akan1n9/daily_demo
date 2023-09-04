@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        img {
+            width: 500px;
+            height: 300px;
+            object-fit: cover;
+            margin: 20px;
+        }
+
+        body {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+        }
+    </style>
+</head>
+
+<body>
+    <img data-src="../../img/12212.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/123.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/213213.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/213213214.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/2143131.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/3213.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/32131.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <img data-src="../../img/321321.jpg" src="../../img/01ff4059acaceea8012028a97710da.gif" alt="">
+    <script>
+        let images = document.getElementsByTagName("img")
+        window.addEventListener("scroll", (e) => {
+            lazyLoad()
+        })
+        function lazyLoad() {
+            for (let i of images) {
+                if (i.offsetTop <= window.innerHeight + window.scrollY) {
+                    let newSrc = i.getAttribute("data-src");
+                    i.setAttribute("src", newSrc)
+                }
+            }
+        }
+
+        // function ergodic() {
+        //     for (let i of images) {
+        //         //计算方式和第一种方式不同
+        //         if (i.getBoundingClientRect().top < window.innerHeight) {
+        //             let trueSrc = i.getAttribute("data-src");
+        //             i.setAttribute("src", trueSrc);
+        //         }
+        //     }
+        // }
+
+        lazyLoad();
+    </script>
+</body>
+
+</html>
