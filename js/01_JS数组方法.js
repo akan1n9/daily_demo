@@ -401,4 +401,7 @@ const maxValue = exp2.reduce((prev, item) => {
     return prev > item ? prev : item;
 });
 
-console.log(maxValue); 
+console.log(maxValue);
+
+
+

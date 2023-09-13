@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>JS Bin</title>
+    <style>
+        span {
+            font-size: 2em;
+        }
+
+        #container {
+            display: grid;
+            grid-template-columns: 50px 50px 50px;
+            /*每一列列宽*/
+            grid-template-rows: 50px 50px 50px;
+            /*每一行行高*/
+        }
+
+        /* 也可以使用百分比，利用repeat实现重复 */
+        /* #container {
+            display: grid;
+            grid-template-columns: repeat(3, 33.33%);
+            grid-template-rows: repeat(3, 33.33%);
+        } */
+        /* 还可以这样 */
+        /* grid-template-columns: repeat(2, 100px 20px 80px); */
+        /* 上面代码定义了六列，第一列和第四列的宽度为100px，第二列和第五列为20px，第三列和第六列为80px。 */
+
+        /* auto-fill 关键字
+        .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 100px);
+        }
+        上面代码表示每列宽度100px，然后自动填充，直到容器不能放置更多的列。
+        auto-fit关键字 与auto-fill几乎一样，唯一不同只有在容器足够宽，可以在一行容纳所有单元格，并且单元格宽度不固定的时候，才会有行为差异
+        auto-fill会用空格子填满剩余宽度，auto-fit则会尽量扩大单元格的宽度。
+        */
+
+        .item {
+            font-size: 2em;
+            text-align: center;
+            border: 1px solid #e5e4e9;
+        }
+
+        .item-1 {
+            background-color: #ef342a;
+        }
+
+        .item-2 {
+            background-color: #f68f26;
+        }
+
+        .item-3 {
+            background-color: #4ba946;
+        }
+
+        .item-4 {
+            background-color: #0376c2;
+        }
+
+        .item-5 {
+            background-color: #c077af;
+        }
+
+        .item-6 {
+            background-color: #f8d29d;
+        }
+
+        .item-7 {
+            background-color: #b5a87f;
+        }
+
+        .item-8 {
+            background-color: #d0e4a9;
+        }
+
+        .item-9 {
+            background-color: #4dc7ec;
+        }
+    </style>
+</head>
+
+<body>
+    <span>foo</span>
+    <div id="container">
+        <div class="item item-1">1</div>
+        <div class="item item-2">2</div>
+        <div class="item item-3">3</div>
+        <div class="item item-4">4</div>
+        <div class="item item-5">5</div>
+        <div class="item item-6">6</div>
+        <div class="item item-7">7</div>
+        <div class="item item-8">8</div>
+        <div class="item item-9">9</div>
+    </div>
+    <span>bar</span>
+</body>
+
+</html>

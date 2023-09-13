@@ -1,5 +1,4 @@
-const arr = [1, 2, 3, [4, 5], [7, [8, 9]], 10];
-
+const arr = [1, 2, 3, [4, 5], [7, [8, 9]], 10]; 
 //1.利用ES6数组的flat方法。 
 let arr1 = arr.flat(Infinity)
 console.log(arr1);

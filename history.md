@@ -22,6 +22,31 @@ splice()从数组中删除指定的一个或多个元素，slice从字符串/数
 
 JS迭代器（Iterator）是一种用于遍历数据结构的对象，它定义了一种标准的方式来访问数据结构的元素。
 
+##### 函数预处理阶段：
+
+是在代码执行前，js引擎会对函数进行一些预处理操作，主要有以下方面：
+
+1.函数声明提升：所有的函数声明会被提升到当前作用域的顶部
+
+2.变量声明提升：所有的变量声明会被提升到当前作用域的顶部，但赋值操作不会被提升
+
+3.函数表达式不会被提升，与函数声明不同，只有赋值后才能使用
+
+另外：
+
+关于函数预处理：
+
+1. 产生一个 LexicalEnvironment (JS 词法环境对象) 。
+2. 函数的参数加入 LexicalEnvironment 中。
+3. 内部声明式函数加入 LexicalEnvironment 中。
+4. 内部 var 变量加入 LexicalEnvironment 中。
+
+【注意】：每调用一次，会产生一个 LexicalEnvironment (JS 词法环境对象) 。
+
+##### 函数对象的toString方法：
+
+打印函数时，返回函数的字符串形式，会自动调用函数对象的toString方法，可以重写toString方法。
+
 
 
 #### H5 and CSS：
@@ -92,6 +117,86 @@ html body #nav .selected > a:hover  /* (0, 1, 2, 3) */
 4. `grayscale()`：将元素转换为灰度图像，值为0到1之间的小数值将减少灰度，值为1将完全转换为灰度。
 5. `hue-rotate()`：旋转元素的色相，值为角度值（0到360之间）。
 
+##### flex
+
+通过display：flex指定一个容器为flex布局，所有子元素自动成为flex项目，子元素的float、clear、wertical-align属性将消失。
+
+容器的属性：
+
+1.flex-direction属性决定主轴的方向（即项目的排列方向）。有四个值：
+
+- `row`（默认值）：主轴为水平方向，起点在左端。
+- `row-reverse`：主轴为水平方向，起点在右端。
+- `column`：主轴为垂直方向，起点在上沿。
+- `column-reverse`：主轴为垂直方向，起点在下沿。
+
+2.`flex-wrap`属性定义，如果一条轴线排不下，如何换行。
+
+- `nowrap`（默认）：不换行。
+- `wrap`：换行，第一行在上方。
+- `wrap-reverse`：换行，第一行在下方。
+
+3.`flex-flow`属性是`flex-direction`属性和`flex-wrap`属性的简写形式，默认值为`row nowrap`。
+
+```css
+.box {
+  flex-flow: <flex-direction> || <flex-wrap>;
+}
+```
+
+4.`justify-content`属性定义了项目在主轴上的对齐方式。
+
+- `flex-start`（默认值）：左对齐
+- `flex-end`：右对齐
+- `center`： 居中
+- `space-between`：两端对齐，项目之间的间隔都相等。
+- `space-around`：每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。
+
+5.`align-items`属性定义项目在交叉轴上如何对齐。
+
+- `flex-start`：交叉轴的起点对齐。
+- `flex-end`：交叉轴的终点对齐。
+- `center`：交叉轴的中点对齐。
+- `baseline`: 项目的第一行文字的基线对齐。
+- `stretch`（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。
+- <img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071011.png" alt="img" style="zoom:33%;" />
+
+6.`align-content`属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。
+
+- `flex-start`：与交叉轴的起点对齐。
+- `flex-end`：与交叉轴的终点对齐。
+- `center`：与交叉轴的中点对齐。
+- `space-between`：与交叉轴两端对齐，轴线之间的间隔平均分布。
+- `space-around`：每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍。
+- `stretch`（默认值）：轴线占满整个交叉轴。
+- <img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015071012.png" alt="img" style="zoom:33%;" />
+
+项目属性：
+
+1.`order`属性定义项目的排列顺序。数值越小，排列越靠前，默认为0。
+
+2.`flex-grow`属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。
+
+3.`flex-shrink`属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。
+
+4.`flex-basis`属性定义了在分配多余空间之前，项目占据的主轴空间（main size）。 浏览器根据这个属性，计算主轴是否有多余空间。 它的默认值为auto，即项目的本来大小。
+
+5.`flex`属性是flex-grow,flex-shrink 和flex-basis 的简写，默认值为0 1 auto。 后两个属性可选
+
+6.`align-self`属性允许单个项目有与其他项目不一样的对齐方式，可覆盖属性align-items。 默认值为auto，表示继承父元素的属性，如果没有父元素，则等同于stretch
+
+##### grid
+
+[CSS Grid 网格布局教程 - 阮一峰的网络日志 (ruanyifeng.com)](https://ruanyifeng.com/blog/2019/03/grid-layout-tutorial.html)
+
+##### 回流与重绘：
+
+回流：dom元素位置发生变化，导致浏览器需要重新计算元素的几何属性，然后重新布局页面。
+
+重绘：dom元素样式发生变化，但不影响其几何属性，浏览器只需要重新绘制元素的样式，而不需要重新布局页面。
+
+回流比重绘成本高
+
 #### others：
 
 ##### 浏览器缓存：
@@ -140,7 +245,32 @@ Node.js采用的是异步IO模型。同步API在主线程中执行，异步API�
 
 5.微任务中process.nextTick的优先级最高，会优先执行。
 
+##### 跨域
 
+##### 前端SEO优化
 
+1. 合理的html结构：正确的标签，语义化
+2. 清晰的URL结构
+3. 优化页面加载速度：优化代码，压缩文件，减少http请求
+4. 响应式设计
+5. 内部链接优化
+6. 图片优化：合适的图片格式，压缩图片大小，添加描述性的alt标签
+7. 合理的meta标签，使用meta标签提供网页的描述，关键字和其他元数据
+8. 合理安排重要内容的位置，引擎抓取顺序是从上到下
 
+##### 浏览器渲染流程：
+
+从服务端获取HTML代码，将其解析成DOM树
+
+将css代码解析成cssom（css对象模型），cssom表示网页的样式
+
+浏览器将dom树和cssom合并，构建渲染树（Render Tree），其中很重要的一步：去除不可见元素，只显示可见元素
+
+Layout(布局)： 根据Render Tree的结构和样式信息进行布局，得到节点的几何信息。
+
+Painting(绘制)：使用计算好的布局信息，讲Render Tree中的元素绘制到屏幕上
+
+JavaScript：在渲染过程中遇到js代码，停止渲染，执行js代码
+
+重绘与重排
 

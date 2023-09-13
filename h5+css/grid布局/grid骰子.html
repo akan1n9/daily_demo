@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>grid骰子</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .touzi2,
+        .touzi1 {
+            margin: 50px 100px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .six_face,
+        .five_face,
+        .four_face,
+        .three_face,
+        .two_face,
+        .one_face {
+            justify-items: center;
+            align-items: center;
+            width: 400px;
+            height: 400px;
+            border-radius: 7%;
+            background-color: tomato;
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-areas:
+                "lt . rt"
+                "lc cc rc"
+                "lb . rb";
+        }
+
+
+        .dot {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #fff;
+
+        }
+
+        .lt-dot {
+            grid-area: lt;
+        }
+
+        .lb-dot {
+            grid-area: lb;
+        }
+
+        .cc-dot {
+            grid-area: cc;
+        }
+
+        .rt-dot {
+            grid-area: rt;
+        }
+
+        .rb-dot {
+            grid-area: rb;
+        }
+
+        .lc-dot {
+            grid-area: lc;
+        }
+
+        .rc-dot {
+            grid-area: rc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="touzi1">
+        <div class="three">
+            <div class="one_face">
+                <span class="dot cc-dot"></span>
+            </div>
+        </div>
+        <div class="three">
+            <div class="two_face">
+                <span class="dot lt-dot"></span>
+                <span class="dot rb-dot"></span>
+            </div>
+        </div>
+        <div class="three">
+            <div class="three_face">
+                <span class="dot lt-dot"></span>
+                <span class="dot cc-dot"></span>
+                <span class="dot rb-dot"></span>
+            </div>
+        </div>
+    </div>
+    <div class="touzi2">
+        <div class="three">
+            <div class="four_face">
+                <span class="dot lt-dot"></span>
+                <span class="dot lb-dot"></span>
+                <span class="dot rt-dot"></span>
+                <span class="dot rb-dot"></span>
+            </div>
+        </div>
+        <div class="three">
+            <div class="five_face">
+                <span class="dot lt-dot"></span>
+                <span class="dot lb-dot"></span>
+                <span class="dot cc-dot"></span>
+                <span class="dot rt-dot"></span>
+                <span class="dot rb-dot"></span>
+            </div>
+        </div>
+        <div class="three">
+            <div class="six_face">
+                <span class="dot lt-dot"></span>
+                <span class="dot lb-dot"></span>
+                <span class="dot lc-dot"></span>
+                <span class="dot rt-dot"></span>
+                <span class="dot rb-dot"></span>
+                <span class="dot rc-dot"></span>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -87,8 +87,8 @@ console.log(str8.substring(-1));                          // abcdefgg
 // 7.大小写转换  toLowerCase()/toUpperCase()
 let str9 = "adABDndj"
 console.log(str9.toLowerCase());                          //adabdndj
-console.log(str9.toUpperCase());    
-console.log(str9);                      //ADABDNDJ
+console.log(str9.toUpperCase());                          //ADABDNDJ
+console.log(str9);                      
 
 let word = "apple"
 word = word[0].toUpperCase() + word.substr(1)
