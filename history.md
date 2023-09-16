@@ -47,6 +47,12 @@ JS迭代器（Iterator）是一种用于遍历数据结构的对象，它定义�
 
 打印函数时，返回函数的字符串形式，会自动调用函数对象的toString方法，可以重写toString方法。
 
+##### 闭包
+
+闭包就是指闭包函数，就是那些引用了另一个函数作用域中变量的函数。最简单的形式就是嵌套定义函数可以让你拿到父函数体的内容，在js里任何函数都可以捕获上级作用域的变量。
+
+简单来说闭包就是背包，当一个函数被创建并传递或从另一个函数返回时，他会携带一个背包，背包中是函数声明时作用域内所有的变量，任何时候我再使用这个函数，背包也一直存在，里面的变量也存在
+
 
 
 #### H5 and CSS：
@@ -197,6 +203,493 @@ html body #nav .selected > a:hover  /* (0, 1, 2, 3) */
 
 回流比重绘成本高
 
+#### vue
+
+##### 父子间传值
+
+###### props:
+
+```javascript
+//Parent.vue
+<template>
+    <Child :msg="message"><Child/> //通过v-bind将父组件的数据message绑定到子组件的msg属性上
+<template/>
+//Child.vue
+<template>
+  <div>
+    <h1>子组件收到{{ msg }}<h1/>
+  <div/>
+<template/>
+<script>
+import { defineProps } from "vue";
+const props = defineProps({
+  msg: String,
+});       
+<script/>                
+```
+
+###### emits:
+
+```js
+//Child.vue
+<template>
+  <div>
+    <button @click="ctop">emit子传父<button/> //点击按钮触发ctop回调函数
+  <div/>
+<template/>
+<script>
+import { defineEmits } from "vue";
+const emit = defineEmits(["dadClick"]); //注册一个emit事件，告诉父亲要触发的事件是什么
+const ctop = () => {
+  // 参数一：事件名，参数二：传给父组件的值
+  emit("dadClick", zichuanfu);
+};
+const zichuanfu = {
+  name: "儿子",
+  age: 18,
+};
+<script/>   
+//Parent.vue
+<template>
+    <Child @dadClick="dadjieshou" /> //触发dadClick后走dadjieshou回调
+<template/>
+<script>
+const dadjieshou = (data) => { //这里的data就是 zichuanfu{}
+  console.log(data.name)
+  console.log(data.age)  
+};
+<script/> 
+```
+
+###### ref/expose:
+
+子组件通过defineExpose暴露想暴露出去的数据和方法
+
+父组件通过ref绑定子组件，在ref.value中可以拿到子组件暴露的方法和数据
+
+```js
+//Parent.vue
+<template>
+  <div style="background-color: blueviolet">
+    <button @click="callChild1">调用child1子组件方法ref/expose<button/>
+    <p>拿到child1子组件数据 ：{{ refChild1 }}<p/>
+  <div/>
+  <child ref = "son"><child/>         //通过ref = "son"绑定子组件，获取子组件实例
+<template/>
+<script>
+import { ref } from "vue";
+
+const refChild = ref("父组件初始数据");
+const son = ref(null);                //通过模板ref锁定子组件child
+const callChild = () => {
+  console.log(rte.value);
+  son.value.changetxt("使用子组件Child1方法修改后的数据");
+  refChild1.value = son.value.txt;
+};
+<script/>      
+    
+//Child.vue
+<template>
+  <div style="background-color: #ac3434">
+    <h1>child1子组件数据：{{ txt }}<h1/>
+  <div/>
+<script>
+import { ref } from "vue";
+// ref/expose
+const txt = ref("子组件初始数据");
+const changetxt = (data) => {
+  txt.value = data;
+};
+// 使用expose暴露方法和数据
+defineExpose({
+	txt,changetxt
+})
+<script/>   
+<template/>
+```
+
+expose函数：使用expose函数来控制组件被ref时向外暴露的对象内容，借此来维护组件的封装性。
+
+###### mitt/事件总线
+
+vue3移除组件事件的$on,$off,$once实例方法，导致传统的eventBus通信无法再使用。回顾vue2事件总线：
+
+- 在入口文件main.js中创建vm实例并安装EventBus `Vue.prototype.$bus = this`
+- A组件想接受数据，则在A组件中给$bus绑定自定义事件`this.$bus.$on('xxxx',回调函数)`
+- B组件提供数据，`this.$bus.$emit('xxxx',数据)`
+- 在beforeDestory里面解绑事件：`this.$bus.$off('xxxx')`
+
+vue3中借用第三方库更优雅的实现事件总线：
+
+首先在根目录文件夹下创建mitt.js,引入并调用mitt
+
+```js
+//mitt.js
+import mitt from 'mitt'
+const usemitt = mitt()
+export default usemitt
+```
+
+然后分别在mitt1和mitt2组件中使用
+
+```vue
+//mitt1.vue
+<template>
+  <div style="background-color: #65d14d">
+    <h1>我是mitt1</h1>
+    <button @click="toMitt2">向mitt2打个招呼</button>
+  </div>
+</template>
+
+<script setup>
+import mitt from "../util/mitt";
+let asx = '来自mitt1的你好'
+const toMitt2 = ()=>{
+    mitt.emit('Hello',asx)
+}
+</script>
+
+//mitt2.vue
+<template>
+  <div style="background-color: #1e8ec6">
+    <h1>我是mitt2</h1>
+    <h1>展示来自mitt1的数据 ：{{ mittasx }}</h1>
+  </div>
+</template>
+
+<script setup>
+import { ref,onUnmounted } from "vue";
+import mitt from "../util/mitt";
+const mittasx = ref("暂时没有");
+mitt.on("Hello", (data) => {
+  //   console.log(data);
+  mittasx.value = data;
+});
+
+// 销毁事件
+
+onUnmounted(() => {
+  mitt.off("Hello", (data) => {
+    //   console.log(data);
+    mittasx.value = data;
+  });
+});
+</script>
+```
+
+对比EventBus，mitt更加轻量化，也更好维护，EventBus是一个完整的vue实例，因此他会维护一个完整的响应式系统。
+
+###### v-model
+
+父组件：
+
+```vue
+<template>
+  <vmodel2 v-model:msg1="message1" v-model:msg2="message2" />
+</template>
+
+<script setup>
+import { ref } from "vue";
+import vmodel2 from "./vmodel2";
+
+const message1 = ref("雷猴");
+
+const message2 = ref("蟑螂恶霸");
+</script>
+```
+
+子组件
+
+```vue
+<template>
+  <div><button @click="changeMsg1">修改msg1</button> {{msg1}}</div>
+
+  <div><button @click="changeMsg2">修改msg2</button> {{msg2}}</div>
+</template>
+
+<script setup>
+import { ref,defineEmits,defineProps } from 'vue'
+
+// 接收
+const props = defineProps({
+  msg1: String,
+  msg2: String
+})
+
+const emit = defineEmits(['update:msg1', 'update:msg2']) //必须用 update:modelValue 这个名字来通知父组件修改值
+
+//emit参数1：通知父组件修改数据的方法名，参数2：要修改的值
+function changeMsg1() {
+  emit('update:msg1', '鲨鱼辣椒')
+}
+
+function changeMsg2() {
+  emit('update:msg2', '蝎子莱莱')
+}
+
+</script>
+```
+
+###### provide/inject(多层传值)
+
+provide在父组件里往下传值
+
+inject在子(后代)组件中往上取值
+
+无论组件层次结构有多深，父组件都可以作为其所有子组件的依赖提供者。
+
+顶层父组件：
+
+```vue
+<template>
+  <div style="background-color: #bd30d2">
+    我是顶层父组件
+    <h3>provide的数据:{{ name }},{{ age }}</h3>
+    <Zi />
+  </div>
+</template>
+
+<script setup>
+import { ref, provide, readonly } from "vue";
+import Zi from "./Zi.vue";
+const name = ref("Parent");
+const age = ref(50);
+
+provide("name", readonly(name)); //设置readonly让子组件无法直接修改该数据，只能通过传下去的方法修改
+provide("age", age);
+provide("changeName", (newvalue) => {
+  name.value = newvalue;
+});
+
+// 假如爷爷和父亲同时提供一个provide，孙子用谁的？
+provide("test", "爷爷给的test");
+</script>
+```
+
+第二层子组件：
+
+```vue
+<template>
+  <div style="background-color: #95549f">
+    我是父下一级子组件
+    <Sun />
+  </div>
+</template>
+  
+<script setup>
+import { provide } from "vue";
+import Sun from "./Sun.vue";
+// 假如爷爷和父亲同时提供一个provide，孙子用谁的？
+provide("test", "爸爸给的test");
+</script>
+```
+
+第三层孙组件：
+
+```vue
+<template>
+  <div style="background-color: #88708c">
+    <h3>我是子组件下一级孙组件</h3>
+    <h3>
+      name:{{ name }} , age:{{ age }}, sex:{{ sex }},
+      假如爷爷和父亲同时提供一个provide，孙子用谁的？:{{ test }}
+    </h3>
+    <button @click="change">改变</button>
+  </div>
+</template>
+<script setup>
+import { inject } from "vue";
+const name = inject("name", "默认值");
+const age = inject("age", "默认值");
+const changeName = inject("changeName");
+const sex = inject("sex", "默认值");    //看能不能找到provide的东西，如果没有，就把默认值赋上
+const change = () => {
+  changeName("使用provide传来的方法改变readonly");
+  age.value = 20;
+  console.log(name, age);
+};
+// 假如爷爷和父亲同时提供一个provide，孙子用谁的？
+const test = inject("test", "我用谁的");
+</script>
+```
+
+###### attrs(透穿)
+
+attrs：访问所有父组件传递的飞=非props声明的属性
+
+父组件：
+
+```vue
+<template>
+  <div style="background-color: #b9d026">
+    <h1>attrsParent</h1>
+    <button @click="parentFun">调用自身parentFun</button>
+    <attrs-child
+      v-on:parentFun="parentFun"
+      :msg1="msg1"
+      :msg2="msg2"
+      title="333"
+      :parFunction="sayHello"
+    />
+  </div>
+</template>
+
+<script setup>
+import attrsChild from "./attrsChild.vue";
+import { ref } from "vue";
+const msg1 = ref("用props接受");
+const msg2 = ref("不用props接受");
+const parentFun = () => {
+  alert("Hello");
+};
+
+const sayHello = () => {
+  alert("props,hello");
+};
+</script>
+```
+
+子组件：
+
+```vue
+<template>
+  <div style="background-color: #93db0d">
+    {{ msg1 }}, {{ attrs.msg2 }}, {{ attrs.title }}
+  </div>
+  <button @click="attrs.onParentFun">看看attrs里面的onParentFun</button>
+  <button @click="parFunction">看看props里面的parFunction</button>
+</template>
+
+<script setup>
+import { useAttrs } from "vue";
+
+defineProps({
+  msg1: String,
+  parFunction: Function,
+});
+
+// attrs：包含父作用域里除 class 和 style 除外的非 props 属性集合
+// “透传 attribute”指的是传递给一个组件，却没有被该组件声明为 props 或 emits 的 attribute 或者 v-on 事件监听器
+const attrs = useAttrs();
+console.log(attrs); //{msg2: '不用props接受', title: '333', __vInternal: 1, onParentFun: ƒ}
+</script>
+```
+
+###### 插槽slot
+
+插槽主要用于父组件向子组件插入html模板片段，子组件暴露slot元素作为内容的出口
+
+默认插槽：
+
+父组件
+
+```vue
+<template >
+  <div class="parent">
+    <h1>这里是slot父组件</h1>
+    <child-slot>
+        以下内容填充到子组件的slot元素中
+      <img src="../../assets/12212.jpg" alt="" />
+    </child-slot>
+  </div>
+</template>
+```
+
+子组件：
+
+```vue
+<template>
+  <div class="child">
+    <h2>这是slot子组件</h2>
+    <slot>没传值时slot默认值</slot>
+  </div>
+</template>
+```
+
+具名插槽：
+
+父组件：
+
+```vue
+<template >
+  <div class="parent">
+    <h1>这里是slot父组件</h1>
+    <child-2-slot>
+      <template v-slot:center> //插入下方name="center"的位置
+        <img src="../../assets/213213.jpg" alt="" />
+      </template>
+      <template v-slot:footer>//插入下方name="footer"的位置
+        <h4>尝试具名插槽，这里是footer</h4>
+      </template>
+    </child-2-slot>
+  </div>
+</template>
+```
+
+子组件:
+
+```vue
+<template>
+  <div class="child">
+    <h3>这是具名插槽子组件</h3>
+    <slot name="center">1</slot>
+    <slot name="footer">2</slot>
+  </div>
+</template>
+```
+
+
+
+##### 双向绑定
+
+
+
+一句话:数据驱动视图。
+
+在vue中通过指令(v-model)将数据属性绑定到视图元素上，数据变化，视图会自动更新；视图的值变化，数据也会更新；
+
+具体实现：
+
+1. Vue使用了一个名为“Observer”的观察者对象来监听数据的变化。当数据发生变化时，观察者会通知所有相关的订阅者。
+2. 在Vue的编译过程中，会对模板进行解析，将模板中的指令和表达式转换为对应的渲染函数。
+3. 在渲染函数中，会将数据属性和视图元素进行绑定。当数据属性发生变化时，会触发观察者的更新方法，进而通知所有相关的订阅者进行更新。
+4. 当视图元素的值发生变化时，会触发相应的事件，通过事件处理函数将新的值更新到数据属性上。
+
+##### 生命周期
+
+vue3中beforecreate和created被setup方法本身所替代，我们在在setup中将会访问到9个生命周期：
+
+- onBeforeMount：在挂载之前被调用，渲染函数render首次被调用
+  - 当这个钩子被调用时，组件已经完成了其响应式状态的设置，但还没有创建 DOM 节点。它即将首次执行 DOM 渲染过程。
+
+- onMounted：注册一个回调函数，在组件挂载完成后执行
+
+- onBeforeUpdate：注册一个钩子，在组件即将因为响应式状态变更而更新其 DOM 树之前调用。
+
+  这个钩子可以用来在 Vue 更新 DOM 之前访问 DOM 状态。
+
+- onUpdated：注册一个回调函数，在组件因为响应式状态变更而更新其 DOM 树之后调用。
+
+  不要在 updated 钩子中更改组件的状态，这可能会导致无限的更新循环！
+
+- onBeforeUnmount：在卸载组件实例之前调用，此阶段的实例依旧是正常的，仍然保有全部的功能。
+
+- onUnmounted：注册一个回调函数，在组件实例被卸载之后调用。
+
+  可以在这个钩子中手动清理一些副作用，例如计时器、DOM 事件监听器或者与服务器的连接。
+
+- onActivated：被keep-alive缓存的组件激活时调用
+
+- onDeactivated：被keep-alive缓存的组件停用时调用
+
+- onErrorCaptured：当捕获一个来自子孙组件的错误时被调用，有三个参数：错误对象、发生错误的组件实例、一个包含错误来源信息的字符串；此钩子会返回false来阻止改错误继续向上传播。
+
+##### ref
+
+vue中的ref有两种用途，vue3中ref可以用来创建响应式数据，对于对象类型的响应式数据，用reactive。
+
+另一种特殊的用法，就是延用vue2中的ref用法，用来获取一个vue组件实例，使用方法就是在父组件中声明一个null的ref对象，绑定到子组件的ref属性上，就可以获取子组件实例。
+
 #### others：
 
 ##### 浏览器缓存：
@@ -273,4 +766,22 @@ Painting(绘制)：使用计算好的布局信息，讲Render Tree中的元素�
 JavaScript：在渲染过程中遇到js代码，停止渲染，执行js代码
 
 重绘与重排
+
+##### 服务端渲染SSR
+
+简单来说就是在服务器上生成HTML内容，并将其发送到客户端呈现。传统的客户端渲染是在浏览器上使用JavaScript生成和操作dom
+
+##### token/session
+
+Token是一种用于身份验证和授权的令牌。它是服务器颁发给客户端的一串字符串，用于标识客户端的身份和权限。客户端在每次请求服务器资源时，都需要携带有效的token，以便服务器验证客户端的身份和权限。
+
+Session是一种在服务器端存储用户信息的机制。当用户首次访问服务器时，服务器会为该用户创建一个唯一的session，并将session的标识信息（通常是一个session ID）发送给客户端。客户端在后续的请求中会携带该session ID，服务器通过该ID来查找对应的session，并获取相关用户信息。
+
+区别：
+
+Session是存放在服务器端的，Token是放在客户端存储的
+
+##### indexedDB
+
+用于在客户端存储大量的结构化数据
 
